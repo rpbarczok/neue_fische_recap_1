@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.FileSystems;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,15 +12,19 @@ import java.util.regex.Pattern;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+
+    static String fileSeperator = FileSystems.getDefault().getSeparator();
+    static String  pathToMain = fileSeperator + "src" + fileSeperator + "main" + fileSeperator + "java" + fileSeperator + "org" + fileSeperator +  "example" + fileSeperator;
+
     public static void main(String[] args) throws IOException {
 
-        File pwFile = new File (System.getProperty("user.dir")+"\\src\\main\\java\\org\\example\\commonPws.txt");
+        File pwFile = new File (System.getProperty("user.dir") + pathToMain + "commonPws.txt");
 
         if (pwFile.isFile()) {
-            File pwFileFiltered = new File(System.getProperty("user.dir")+"\\src\\main\\java\\org\\example\\commonPwsFiltered.txt");
-            if (pwFileFiltered.createNewFile()) {
+            File pwFileFilteredCustomized = new File(System.getProperty("user.dir") + pathToMain + "commonPwsFilteredCustomized.txt");
+            if (pwFileFilteredCustomized.createNewFile()) {
 
-                FileWriter writer = new FileWriter(pwFileFiltered);
+                FileWriter writer = new FileWriter(pwFileFilteredCustomized);
 
                 Scanner reader = new Scanner(pwFile);
 
@@ -31,8 +35,6 @@ public class Main {
                     }
                 }
             }
-        } else {
-            System.out.println("Keine Passwort-Liste gefunden");
         }
 
         Scanner sc=new Scanner(System.in);
@@ -76,9 +78,19 @@ public class Main {
     }
 
     public static boolean valCommon(String password) throws FileNotFoundException {
-        File pwFileFiltered = new File(System.getProperty("user.dir")+"\\src\\main\\java\\org\\example\\commonPwsFiltered.txt");
+        File pwFileFiltered = new File(System.getProperty("user.dir") + pathToMain + "commonPwsFiltered.txt");
         if (pwFileFiltered.isFile()) {
             Scanner reader = new Scanner(pwFileFiltered);
+            while (reader.hasNextLine()) {
+                String data = reader.nextLine();
+                if (password.equals(data)) {
+                    return false;
+                }
+            }
+        }
+        File pwFileFilteredCustomized = new File(System.getProperty("user.dir") + pathToMain + "commonPwsFilteredCustomized.txt");
+        if (pwFileFilteredCustomized.isFile()) {
+            Scanner reader = new Scanner(pwFileFilteredCustomized);
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
                 if (password.equals(data)) {

@@ -12,7 +12,8 @@ class MainTest {
     String pwNoNum = "dtSRfkjlFK";
     String pwNoCap = "dtsr4fkjlfk";
     String pwNoLow = "DTRS4FKJASD";
-    String pwCommon = "Summer10";
+    String pwCommon = "P@ssw0rd";
+
 
     @Test
     void valLen_shouldReturnTrue_WhenInputGE8() {
