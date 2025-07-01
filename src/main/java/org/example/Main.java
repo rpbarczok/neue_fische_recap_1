@@ -1,5 +1,9 @@
 package org.example;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,26 +11,35 @@ import java.util.regex.Pattern;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
 
         Scanner sc=new Scanner(System.in);
-        System.out.println("Please choose your password:");
+        System.out.println("Bitte wähle ein Passwort und gebe es ein:");
         String password=sc.nextLine();
 
-        String response = "Gutes Passwort";
+        File pwFile = new File ("commonPws.txt");
+        if (pwFile.isFile()) {
+            File pwFileFiltered = new File("commonPwsFiltered.txt");
+            if (!pwFileFiltered.isFile()){
+                createCPWList();
+            }
+        } else {
+            System.out.println("Passwort-Liste nicht gefunden");
+        }
+
         if (!valLen(password)) {
-            response = "Passwort ist zu kurz";
+            System.out.println("Passwort ist zu kurz");
         }
         if (!valNum(password))  {
-            response = "Passwort muss eine Ziffer enthalten";
+            System.out.println("Passwort muss eine Ziffer enthalten");
         }
         if (!valCap(password))  {
-            response = "Passwort muss einen Großbuchstaben enthalten";
+            System.out.println("Passwort muss einen Großbuchstaben enthalten");
         }
         if (!valLow(password))  {
-            response = "Passwort muss einen Kleinbuchstaben enthalten";
+            System.out.println("Passwort muss einen Kleinbuchstaben enthalten");
         }
-        System.out.println(response);
     }
 
     public static boolean valLen(String password) {
@@ -49,5 +62,27 @@ public class Main {
         Pattern pattern = Pattern.compile("[a-z]");
         Matcher matcher = pattern.matcher(password);
         return matcher.find();
+    }
+
+    public static void createCPWList() throws IOException {
+        System.out.println("Starting creating file");
+        ArrayList<String> list=new ArrayList<>();
+        File file = new File("commonPws.txt");
+        Scanner reader = new Scanner(file);
+        while (reader.hasNextLine()) {
+            String data = reader.nextLine();
+            if (data.length() >= 8) {
+                list.add(data);
+            }
+        }
+        File passwordFile = new File("commonPwsFiltered.txt");
+        if (passwordFile.createNewFile()) {
+            System.out.println("File created: " + passwordFile.getName());
+        } else {
+            System.out.println("File already exists.");
+        }
+        FileWriter writer = new FileWriter("commonPwsFiltered.txt");
+        writer.write(list.toString());
+        System.out.println("Finished creating file");
     }
 }
