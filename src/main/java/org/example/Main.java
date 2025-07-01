@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,20 +14,30 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main(String[] args) throws IOException {
 
+        File pwFile = new File (System.getProperty("user.dir")+"\\src\\main\\java\\org\\example\\commonPws.txt");
+
+        if (pwFile.isFile()) {
+            File pwFileFiltered = new File(System.getProperty("user.dir")+"\\src\\main\\java\\org\\example\\commonPwsFiltered.txt");
+            if (pwFileFiltered.createNewFile()) {
+
+                FileWriter writer = new FileWriter(pwFileFiltered);
+
+                Scanner reader = new Scanner(pwFile);
+
+                while (reader.hasNextLine()) {
+                    String data = reader.nextLine();
+                    if (valLen(data) && valNum(data) && valCap(data) && valLow(data)) {
+                        writer.write(data+System.lineSeparator());
+                    }
+                }
+            }
+        } else {
+            System.out.println("Keine Passwort-Liste gefunden");
+        }
 
         Scanner sc=new Scanner(System.in);
         System.out.println("Bitte wähle ein Passwort und gebe es ein:");
         String password=sc.nextLine();
-
-        File pwFile = new File ("commonPws.txt");
-        if (pwFile.isFile()) {
-            File pwFileFiltered = new File("commonPwsFiltered.txt");
-            if (!pwFileFiltered.isFile()){
-                createCPWList();
-            }
-        } else {
-            System.out.println("Passwort-Liste nicht gefunden");
-        }
 
         if (!valLen(password)) {
             System.out.println("Passwort ist zu kurz");
@@ -64,25 +75,17 @@ public class Main {
         return matcher.find();
     }
 
-    public static void createCPWList() throws IOException {
-        System.out.println("Starting creating file");
-        ArrayList<String> list=new ArrayList<>();
-        File file = new File("commonPws.txt");
-        Scanner reader = new Scanner(file);
-        while (reader.hasNextLine()) {
-            String data = reader.nextLine();
-            if (data.length() >= 8) {
-                list.add(data);
+    public static boolean valCommon(String password) throws FileNotFoundException {
+        File pwFileFiltered = new File(System.getProperty("user.dir")+"\\src\\main\\java\\org\\example\\commonPwsFiltered.txt");
+        if (pwFileFiltered.isFile()) {
+            Scanner reader = new Scanner(pwFileFiltered);
+            while (reader.hasNextLine()) {
+                String data = reader.nextLine();
+                if (password.equals(data)) {
+                    return false;
+                }
             }
         }
-        File passwordFile = new File("commonPwsFiltered.txt");
-        if (passwordFile.createNewFile()) {
-            System.out.println("File created: " + passwordFile.getName());
-        } else {
-            System.out.println("File already exists.");
-        }
-        FileWriter writer = new FileWriter("commonPwsFiltered.txt");
-        writer.write(list.toString());
-        System.out.println("Finished creating file");
+        return  true;
     }
 }

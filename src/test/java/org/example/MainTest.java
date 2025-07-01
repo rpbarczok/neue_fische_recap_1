@@ -2,6 +2,8 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
@@ -10,6 +12,7 @@ class MainTest {
     String pwNoNum = "dtSRfkjlFK";
     String pwNoCap = "dtsr4fkjlfk";
     String pwNoLow = "DTRS4FKJASD";
+    String pwCommon = "Summer10";
 
     @Test
     void valLen_shouldReturnTrue_WhenInputGE8() {
@@ -42,20 +45,32 @@ class MainTest {
     }
 
     @Test
-    void valNum_shouldReturnFalse_WhenInputHasNoCap() {
+    void valCap_shouldReturnFalse_WhenInputHasNoCap() {
         boolean result = Main.valCap(pwNoCap);
         assertFalse(result);
     }
 
     @Test
-    void valCap_shouldReturnTrue_WhenInputHasLow() {
+    void valLow_shouldReturnTrue_WhenInputHasLow() {
         boolean result = Main.valLow(pwGood);
         assertTrue(result);
     }
 
     @Test
-    void valNum_shouldReturnFalse_WhenInputHasNoLow() {
+    void valLow_shouldReturnFalse_WhenInputHasNoLow() {
         boolean result = Main.valLow(pwNoLow);
+        assertFalse(result);
+    }
+
+    @Test
+    void valCommon_shouldReturnTrue_WhenInputHasLow() throws FileNotFoundException {
+        boolean result = Main.valCommon(pwGood);
+        assertTrue(result);
+    }
+
+    @Test
+    void valCommon_shouldReturnFalse_WhenInputHasNoLow() throws FileNotFoundException {
+        boolean result = Main.valCommon(pwCommon);
         assertFalse(result);
     }
 }
