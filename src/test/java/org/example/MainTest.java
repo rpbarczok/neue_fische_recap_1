@@ -8,8 +8,8 @@ class MainTest {
     String pwGood = "sR12hcH:op";
     String pwShort = "alös";
     String pwNoNum = "dtSRfkjlFK";
-//    String pwNoCap = "dtsr4fkjlfk";
-//    String pwNoLow = "DTRS4FKJASD";
+    String pwNoCap = "dtsr4fkjlfk";
+    String pwNoLow = "DTRS4FKJASD";
 
     @Test
     void valLen_shouldReturnTrue_WhenInputGE8() {
@@ -32,6 +32,30 @@ class MainTest {
     @Test
     void valNum_shouldReturnFalse_WhenInputHasNoNum() {
         boolean result = Main.valNum(pwNoNum);
+        assertFalse(result);
+    }
+
+    @Test
+    void valCap_shouldReturnTrue_WhenInputHasCap() {
+        boolean result = Main.valCap(pwGood);
+        assertTrue(result);
+    }
+
+    @Test
+    void valNum_shouldReturnFalse_WhenInputHasNoCap() {
+        boolean result = Main.valCap(pwNoCap);
+        assertFalse(result);
+    }
+
+    @Test
+    void valCap_shouldReturnTrue_WhenInputHasLow() {
+        boolean result = Main.valLow(pwGood);
+        assertTrue(result);
+    }
+
+    @Test
+    void valNum_shouldReturnFalse_WhenInputHasNoLow() {
+        boolean result = Main.valLow(pwNoLow);
         assertFalse(result);
     }
 }

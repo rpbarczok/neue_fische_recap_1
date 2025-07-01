@@ -20,6 +20,12 @@ public class Main {
         if (!valNum(password))  {
             response = "Passwort muss eine Ziffer enthalten";
         }
+        if (!valCap(password))  {
+            response = "Passwort muss einen Großbuchstaben enthalten";
+        }
+        if (!valLow(password))  {
+            response = "Passwort muss einen Kleinbuchstaben enthalten";
+        }
         System.out.println(response);
     }
 
@@ -29,6 +35,18 @@ public class Main {
 
     public static boolean valNum(String password) {
         Pattern pattern = Pattern.compile("[0-9]");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
+    }
+
+    public static boolean valCap(String password) {
+        Pattern pattern = Pattern.compile("[A-Z]");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
+    }
+
+    public static boolean valLow(String password) {
+        Pattern pattern = Pattern.compile("[a-z]");
         Matcher matcher = pattern.matcher(password);
         return matcher.find();
     }
