@@ -63,13 +63,13 @@ class MainTest {
     }
 
     @Test
-    void valCommon_shouldReturnTrue_WhenInputHasLow() throws FileNotFoundException {
+    void valCommon_shouldReturnTrue_WhenInputIsNotCommon() throws FileNotFoundException {
         boolean result = Main.valCommon(pwGood);
         assertTrue(result);
     }
 
     @Test
-    void valCommon_shouldReturnFalse_WhenInputHasNoLow() throws FileNotFoundException {
+    void valCommon_shouldReturnFalse_WhenInputIsCommon() throws FileNotFoundException {
         boolean result = Main.valCommon(pwCommon);
         assertFalse(result);
     }
