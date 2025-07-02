@@ -12,10 +12,11 @@ import java.util.regex.Pattern;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-
+    static String lineSeperator= System.lineSeparator();
     static String fileSeperator = FileSystems.getDefault().getSeparator();
     static String pathToMain = fileSeperator + "src" + fileSeperator + "main" + fileSeperator + "java" + fileSeperator + "org" + fileSeperator +  "example" + fileSeperator;
     static String specialChar = "!\"#$%&'*+,./:;=?@\\^`|~";
+    static String[] abc = {"A","B","C","D","E","F","G","H","I","J","K","L","M", "N", "O", "P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     public static void main(String[] args) throws IOException {
 
@@ -38,42 +39,38 @@ public class Main {
             }
         }
 
+        System.out.println("Vorgeschlagenes Passwort: " + genPw());
         Scanner sc=new Scanner(System.in);
         System.out.println("Bitte wähle ein Passwort und gebe es ein:");
         String password=sc.nextLine();
 
-        valPW(password);
-
-        valSpecial(password);
+        System.out.println(valPW(password));;
 
     }
 
-    public static boolean valPW(String password) {
-        boolean isGoodPW =true;
+    public static String valPW(String password) {
+        String message="";
+
         if (!valLen(password)) {
-            System.out.println("Passwort ist zu kurz");
-            isGoodPW =false;
+            message += "Passwort ist zu kurz"+lineSeperator;
         }
         if (!valNum(password))  {
-            System.out.println("Passwort muss eine Ziffer enthalten");
-            isGoodPW =false;
+            message += "Passwort muss eine Ziffer enthalten"+lineSeperator;
         }
         if (!valCap(password))  {
-            System.out.println("Passwort muss einen Großbuchstaben enthalten");
-            isGoodPW =false;
+            message +="Passwort muss einen Großbuchstaben enthalten"+lineSeperator;
         }
         if (!valLow(password)) {
-            System.out.println("Passwort muss einen Kleinbuchstaben enthalten");
-            isGoodPW =false;
+            message += "Passwort muss einen Kleinbuchstaben enthalten"+lineSeperator;
         }
         if (!valSpecial(password)) {
-            System.out.println("Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten");
+            message +="Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten"+lineSeperator;
         }
-        if (isGoodPW) {
-            System.out.println("Passwort entspricht den Regeln");
+        if (message.isEmpty()) {
+            message = "Passwort entspricht den Regeln"+lineSeperator;
         }
 
-        return isGoodPW;
+        return message;
     }
 
     public static boolean valLen(String password) {
@@ -136,5 +133,45 @@ public class Main {
             }
         }
         return containsSpecial;
+    }
+
+    public static String genPw() {
+        String password = "";
+        boolean isGoodPW = false;
+        while (!isGoodPW) {
+            password = "";
+            for (int i = 0; i < 8; i++) {
+                switch ((int) (Math.random() * 10 + 1)) {
+                    case 1,2,3:
+                        int num = (int) (Math.random() * 10);
+                        password += num;
+                        break;
+                    case 4,5,6:
+                        password += randomCap();
+                        break;
+                    case 7,8,9:
+                        password += randomCap().toLowerCase();
+                        break;
+                    default:
+                        password += randomSpecial();
+                }
+            }
+            if (valPW(password).equals("Passwort entspricht den Regeln"+lineSeperator)) {
+                isGoodPW = true;
+            }
+        }
+
+        return password;
+    }
+
+
+    public static String randomCap() {
+        int num = (int) (Math.random() * abc.length);
+        return abc[num];
+    }
+
+    public static String randomSpecial() {
+        int num = (int) (Math.random() * specialChar.length());
+        return String.valueOf(specialChar.charAt(num));
     }
 }
