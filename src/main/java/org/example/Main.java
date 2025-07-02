@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static String lineSeperator= System.lineSeparator();
-    static String fileSeperator = FileSystems.getDefault().getSeparator();
-    static String pathToMain = fileSeperator + "src" + fileSeperator + "main" + fileSeperator + "java" + fileSeperator + "org" + fileSeperator +  "example" + fileSeperator;
+    static String lineSeparator= System.lineSeparator();
+    static String fileSeparator = FileSystems.getDefault().getSeparator();
+    static String pathToMain = fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "java" + fileSeparator + "org" + fileSeparator +  "example" + fileSeparator;
     static String specialChar = "!\"#$%&'*+,./:;=?@\\^`|~";
     static String[] abc = {"A","B","C","D","E","F","G","H","I","J","K","L","M", "N", "O", "P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -33,7 +33,7 @@ public class Main {
                 while (reader.hasNextLine()) {
                     String data = reader.nextLine();
                     if (valLen(data) && valNum(data) && valCap(data) && valLow(data)) {
-                        writer.write(data+System.lineSeparator());
+                        writer.write(data+lineSeparator);
                     }
                 }
             }
@@ -48,26 +48,29 @@ public class Main {
 
     }
 
-    public static String valPW(String password) {
+    public static String valPW(String password) throws FileNotFoundException {
         String message="";
 
         if (!valLen(password)) {
-            message += "Passwort ist zu kurz"+lineSeperator;
+            message += "Passwort ist zu kurz"+lineSeparator;
         }
         if (!valNum(password))  {
-            message += "Passwort muss eine Ziffer enthalten"+lineSeperator;
+            message += "Passwort muss eine Ziffer enthalten"+lineSeparator;
         }
         if (!valCap(password))  {
-            message +="Passwort muss einen Großbuchstaben enthalten"+lineSeperator;
+            message +="Passwort muss einen Großbuchstaben enthalten"+lineSeparator;
         }
         if (!valLow(password)) {
-            message += "Passwort muss einen Kleinbuchstaben enthalten"+lineSeperator;
+            message += "Passwort muss einen Kleinbuchstaben enthalten"+lineSeparator;
         }
         if (!valSpecial(password)) {
-            message +="Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten"+lineSeperator;
+            message +="Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten"+lineSeparator;
+        }
+        if (!valCommon(password)) {
+            message += "Passwort taucht in einer Liste der häufigsten Passwörter auf" +lineSeparator;
         }
         if (message.isEmpty()) {
-            message = "Passwort entspricht den Regeln"+lineSeperator;
+            message = "Passwort entspricht den Regeln"+lineSeparator;
         }
 
         return message;
@@ -135,7 +138,7 @@ public class Main {
         return containsSpecial;
     }
 
-    public static String genPw() {
+    public static String genPw() throws FileNotFoundException {
         String password = "";
         boolean isGoodPW = false;
         while (!isGoodPW) {
@@ -156,7 +159,7 @@ public class Main {
                         password += randomSpecial();
                 }
             }
-            if (valPW(password).equals("Passwort entspricht den Regeln"+lineSeperator)) {
+            if (valPW(password).equals("Passwort entspricht den Regeln"+lineSeparator)) {
                 isGoodPW = true;
             }
         }

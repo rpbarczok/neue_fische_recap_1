@@ -9,13 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
     String pwGood = "sR12hcH:op";
     String pwGoodEscape = "sR12hcH\\op";
-    String pwShort = "alös";
-    String pwNoNum = "dtSRfkjlFK";
-    String pwNoCap = "dtsr4fkjlfk";
-    String pwNoLow = "DTRS4FKJASD";
+    String pwShort = "aR5%";
+    String pwNoNum = "dtSRf&jlFK";
+    String pwNoCap = "dtsr4fk&lfk";
+    String pwNoLow = "DTRS4FKJ&SD";
     String pwNoSpecial = "sR12hcHdop";
     String pwCommon = "P@ssw0rd";
-
+    String lineSeparator= System.lineSeparator();
+    String specialChar = "!\"#$%&'*+,./:;=?@\\^`|~";
 
     @Test
     void valLen_shouldReturnTrue_WhenInputGE8() {
@@ -95,5 +96,63 @@ class MainTest {
         assertFalse(result);
     }
 
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwGood() throws FileNotFoundException {
+        String expected = "Passwort entspricht den Regeln"+lineSeparator;
+        String result = Main.valPW(pwGood);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwShort() throws FileNotFoundException {
+        String expected = "Passwort ist zu kurz"+lineSeparator;
+        String result = Main.valPW(pwShort);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwNoNum() throws FileNotFoundException {
+        String expected = "Passwort muss eine Ziffer enthalten"+lineSeparator;
+        String result = Main.valPW(pwNoNum);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwNoCap() throws FileNotFoundException {
+        String expected = "Passwort muss einen Großbuchstaben enthalten"+lineSeparator;
+        String result = Main.valPW(pwNoCap);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwNoLow() throws FileNotFoundException {
+        String expected = "Passwort muss einen Kleinbuchstaben enthalten"+lineSeparator;
+        String result = Main.valPW(pwNoLow);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwNoSpecial() throws FileNotFoundException {
+        String expected = "Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten"+lineSeparator;
+        String result = Main.valPW(pwNoSpecial);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIspwCommon() throws FileNotFoundException {
+        String expected = "Passwort taucht in einer Liste der häufigsten Passwörter auf" +lineSeparator;
+        String result = Main.valPW(pwCommon);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void  valPW_shouldReturnCorrectMessage_WhenInputIsasdf() throws FileNotFoundException {
+        String expected = "Passwort ist zu kurz"+lineSeparator +
+                "Passwort muss eine Ziffer enthalten"+lineSeparator +
+                "Passwort muss einen Großbuchstaben enthalten"+lineSeparator +
+                "Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten"+lineSeparator ;
+        String result = Main.valPW("asdf");
+        assertEquals(expected, result);
+    }
 
 }
