@@ -8,10 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
     String pwGood = "sR12hcH:op";
+    String pwGoodEscape = "sR12hcH\\op";
     String pwShort = "alös";
     String pwNoNum = "dtSRfkjlFK";
     String pwNoCap = "dtsr4fkjlfk";
     String pwNoLow = "DTRS4FKJASD";
+    String pwNoSpecial = "sR12hcHdop";
     String pwCommon = "P@ssw0rd";
 
 
@@ -74,4 +76,24 @@ class MainTest {
         boolean result = Main.valCommon(pwCommon);
         assertFalse(result);
     }
+
+    @Test
+    void valSpecial_shouldReturnTrue_WhenInputContainsSpecialChar() throws FileNotFoundException {
+        boolean result = Main.valSpecial(pwGood);
+        assertTrue(result);
+    }
+
+    @Test
+    void valSpecial_shouldReturnTrue_WhenInputContainsSpecialCharWithNeedToEscape() throws FileNotFoundException {
+        boolean result = Main.valSpecial(pwGoodEscape);
+        assertTrue(result);
+    }
+
+    @Test
+    void valSpecial_shouldReturnFalse_WhenInputContainsNotSpecialChar() throws FileNotFoundException {
+        boolean result = Main.valSpecial(pwNoSpecial);
+        assertFalse(result);
+    }
+
+
 }

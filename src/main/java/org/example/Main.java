@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 public class Main {
 
     static String fileSeperator = FileSystems.getDefault().getSeparator();
-    static String  pathToMain = fileSeperator + "src" + fileSeperator + "main" + fileSeperator + "java" + fileSeperator + "org" + fileSeperator +  "example" + fileSeperator;
+    static String pathToMain = fileSeperator + "src" + fileSeperator + "main" + fileSeperator + "java" + fileSeperator + "org" + fileSeperator +  "example" + fileSeperator;
+    static String specialChar = "!\"#$%&'*+,./:;=?@\\^`|~";
 
     public static void main(String[] args) throws IOException {
 
@@ -41,18 +42,38 @@ public class Main {
         System.out.println("Bitte wähle ein Passwort und gebe es ein:");
         String password=sc.nextLine();
 
+        valPW(password);
+
+        valSpecial(password);
+
+    }
+
+    public static boolean valPW(String password) {
+        boolean isGoodPW =true;
         if (!valLen(password)) {
             System.out.println("Passwort ist zu kurz");
+            isGoodPW =false;
         }
         if (!valNum(password))  {
             System.out.println("Passwort muss eine Ziffer enthalten");
+            isGoodPW =false;
         }
         if (!valCap(password))  {
             System.out.println("Passwort muss einen Großbuchstaben enthalten");
+            isGoodPW =false;
         }
-        if (!valLow(password))  {
+        if (!valLow(password)) {
             System.out.println("Passwort muss einen Kleinbuchstaben enthalten");
+            isGoodPW =false;
         }
+        if (!valSpecial(password)) {
+            System.out.println("Passwort muss ein Sonderzeichen (" + specialChar + ") enthalten");
+        }
+        if (isGoodPW) {
+            System.out.println("Passwort entspricht den Regeln");
+        }
+
+        return isGoodPW;
     }
 
     public static boolean valLen(String password) {
@@ -99,5 +120,21 @@ public class Main {
             }
         }
         return  true;
+    }
+
+    public static boolean valSpecial(String password) {
+        boolean containsSpecial = false;
+        for (int i = 0; i < password.length(); i++) {
+            for (int j = 0; j < specialChar.length(); j++) {
+                if (password.charAt(i) == specialChar.charAt(j)) {
+                    containsSpecial = true;
+                    break;
+                }
+            }
+            if (containsSpecial) {
+                break;
+            }
+        }
+        return containsSpecial;
     }
 }
